@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/../../server
+    working_directory: /tmp/server
     docker:
       - image: circleci/node:8.10.0
     steps:
