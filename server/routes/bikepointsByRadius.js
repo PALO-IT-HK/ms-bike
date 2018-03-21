@@ -2,16 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Request = require('request');
 const transformer = require('./../utils/bikePointsTransformer');
-/* GET users listing. */
+const config = require('../config');
+
 router.get('/', function(req, res, next) {
   Request(
     {
       method: 'GET',
-      uri: `https://api.tfl.gov.uk/BikePoint?lat=${req.query.lat}&lon=${
+      uri: `${config.bike_api_url}?lat=${req.query.lat}&lon=${
         req.query.lot
-      }&radius=${
-        req.query.radius
-      }&categories=all&app_id=5ebfd576&app_key=019b1eb8b5ddd58804fe1cb884ce009b`
+      }&radius=${req.query.radius}&app_id=${config.app_id}&app_key=${
+        config.app_key
+      }`
     },
     function(error, response, body) {
       if (!error && response.statusCode == 200) {
