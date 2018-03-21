@@ -7,11 +7,11 @@ router.get('/', function(req, res, next) {
   Request(
     {
       method: 'GET',
-      uri: `https://api.tfl.gov.uk/BikePoint?lat=${req.params.lat}&lon=${
-        req.params.lot
-      }&radius=${
-        req.params.radius
-      }&categories=all&app_id=5ebfd576&app_key=019b1eb8b5ddd58804fe1cb884ce009b`
+      uri: `https://api.tfl.gov.uk/BikePoint?swLat=${req.query.swLat}&swLon=${
+        req.query.swLon
+      }&neLat=${req.query.neLat}&neLon=${
+        req.query.neLon
+      }&app_id=5ebfd576&app_key=019b1eb8b5ddd58804fe1cb884ce009b`
     },
     function(error, response, body) {
       if (!error && response.statusCode == 200) {
