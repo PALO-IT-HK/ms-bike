@@ -3,6 +3,7 @@ jobs:
   build:
     working_directory: /tmp/server
     docker:
+      - image: circleci/python:2.7.1
       - image: circleci/node:8.10.0
     steps:
       - checkout
