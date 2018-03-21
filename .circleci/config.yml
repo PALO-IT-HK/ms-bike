@@ -10,17 +10,8 @@ jobs:
       - run:
           name: Install awscli
           command: sudo pip install awsebcli --upgrade
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-npm
-          command: npm install
       - run:
           name: Deploy to EB if branch is Master
           command: |
             eb use ms-bike
             eb deploy -v --staged
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
