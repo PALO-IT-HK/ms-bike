@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-
 var app = require('./server/app');
 //var debug = require('debug')('myapp:server');
 var http = require('http');
@@ -82,4 +81,5 @@ function onError(error) {
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  logger.info('Listening on ' + bind);
 }

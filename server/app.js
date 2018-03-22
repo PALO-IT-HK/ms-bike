@@ -7,13 +7,11 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var allBikePoints = require('./routes/bikepoints');
-var bikePointsByRadius = require('./routes/bikepointsByRadius');
-var bikePointsByBounds = require('./routes/bikepointsByBounds');
 
 var app = express();
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+global.logger = require('./utils/logger');
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,9 +28,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', routes);
-app.use('/bikepoints', allBikePoints);
-app.use('/bikepointsByRadius', bikePointsByRadius);
-app.use('/bikepointsByBounds', bikePointsByBounds);
+app.use('/bike/point', allBikePoints);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
