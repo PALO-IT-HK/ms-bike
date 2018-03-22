@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var allBikePoints = require('./routes/bikepoints');
+var bikePointsBySearch = require('./routes/bikepoints-search');
+var bikeOccupancy = require('./routes/occupancy');
 
 var app = express();
 
@@ -29,6 +31,8 @@ app.use(function(req, res, next) {
 
 app.use('/', routes);
 app.use('/bike/point', allBikePoints);
+app.use('/bikepoint/search', bikePointsBySearch);
+app.use('/bikepoint/occupancy', bikeOccupancy);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

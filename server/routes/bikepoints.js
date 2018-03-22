@@ -10,6 +10,29 @@ const bikePointsByRadius = require('../../mock-data/bike-points-by-radius.json')
 router.get('/', function(req, res, next) {
   let mockData;
   let tflURI;
+  ({ mockData, tflURI } = switchEndPoints(req, mockData, tflURI));
+  if (config.is_mock_data) {
+    return res.status(200).send(mockData);
+  }
+  Request(
+    {
+      method: 'GET',
+      uri: tflURI
+    },
+    function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let bikePoints = [];
+        let result = transformer.getBikePointsData(
+          JSON.parse(body),
+          bikePoints
+        );
+        return res.status(200).send(bikePoints);
+      }
+    }
+  );
+});
+
+function switchEndPoints(req, mockData, tflURI) {
   if (
     req.query.swLat &&
     req.query.swLon &&
@@ -41,25 +64,7 @@ router.get('/', function(req, res, next) {
       config.app_key
     }`;
   }
-  if (config.is_mock_data) {
-    return res.status(200).send(mockData);
-  }
-  Request(
-    {
-      method: 'GET',
-      uri: tflURI
-    },
-    function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-        let bikePoints = [];
-        let result = transformer.getBikePointsData(
-          JSON.parse(body),
-          bikePoints
-        );
-        return res.status(200).send(bikePoints);
-      }
-    }
-  );
-});
+  return { mockData, tflURI };
+}
 
 module.exports = router;
