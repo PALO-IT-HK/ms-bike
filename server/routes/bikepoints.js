@@ -46,7 +46,7 @@ function switchEndPoints(req, mockData, tflURI) {
       req.query.swLon
     }&neLat=${req.query.neLat}&neLon=${req.query.neLon}&app_id=${
       config.app_id
-    }&app_key=${config.app_key}`;
+    }&app_key=${config.bike_app_key}`;
   } else if (req.query.lat && req.query.lon && req.query.radius) {
     if (config.is_mock_data) {
       mockData = bikePointsByRadius;
@@ -54,14 +54,14 @@ function switchEndPoints(req, mockData, tflURI) {
     tflURI = `${config.bike_api_url}?lat=${req.query.lat}&lon=${
       req.query.lot
     }&radius=${req.query.radius}&app_id=${config.app_id}&app_key=${
-      config.app_key
+      config.bike_app_key
     }`;
   } else {
     if (config.is_mock_data) {
       mockData = allBikePoints;
     }
     tflURI = `${config.bike_api_url}?app_id=${config.app_id}&app_key=${
-      config.app_key
+      config.bike_app_key
     }`;
   }
   return { mockData, tflURI };
