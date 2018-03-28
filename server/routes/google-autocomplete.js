@@ -9,7 +9,9 @@ router.get('/', function(req, res, next) {
   if (req.query.types === 'geocode') {
     tflURI = `${config.google_autocomplete_url}?input=${
       req.query.input
-    }&types=${req.query.types}&language=en&key=${config.google_app_key}`;
+    }&types=${req.query.types}&components=country:gb&language=en&key=${
+      config.google_app_key
+    }`;
   } else {
     tflURI = `${config.google_autocomplete_url}?input=${
       req.query.input
