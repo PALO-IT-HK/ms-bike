@@ -37,7 +37,6 @@ jobs:
                   "name": "%s",
                   "image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
                   "essential": true,
-                  "networkMode": "bridge",
                   "portMappings": [
                     {
                       "containerPort": 3000,
