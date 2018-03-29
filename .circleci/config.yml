@@ -44,8 +44,8 @@ jobs:
                       "protocol": "tcp"
                     }
                   ],
-                  "cpu": 128,
-                  "memory": 128,
+                  "cpu": 0,
+                  "memory": 0,
                   "environment" : [
                       { "name" : "NODE_ENV", "value" : "develop" }
                   ]
