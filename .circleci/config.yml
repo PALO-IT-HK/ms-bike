@@ -1,25 +1,64 @@
 version: 2
 jobs:
   build:
-    working_directory: /tmp/server
+    working_directory: /app
     docker:
-      - image: circleci/python:2.7
+      - image: docker:17.05.0-ce-git
     steps:
       - checkout
+      - setup_remote_docker
       - run:
-          name: Install awscli
-          command: sudo pip install awsebcli --upgrade
-      - run:
-          name: Create AWS credentials manually
+          name: Install dependencies
           command: |
-            mkdir ~/.aws
-            touch ~/.aws/config
-            chmod 600 ~/.aws/config
-            echo "[profile eb-cli]" > ~/.aws/config
-            echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/config
-            echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/config
+            apk add --no-cache py-pip=9.0.0-r1
+            pip install awscli==1.11.76
       - run:
-          name: Deploy to EB if branch is Master
+          name: Build application Docker image
           command: |
-            eb use ms-bike-dev --profile eb-cli
-            eb deploy -v --staged --profile eb-cli
+            docker build -t app .
+      - deploy:
+          name: Push application Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              CLUSTER='ms-cluster'
+              FAMILY='ms-bike'
+              DOCKER_IMAGE='ms-bike'
+              TASK='ms-bike'
+              SERVICE='svc-ms-bike'
+              # Login to AWS
+              aws configure set region $AWS_REGION
+              $(aws ecr get-login)
+              # Tag and push docker image
+              docker tag app $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_IMAGE:$CIRCLE_SHA1
+              docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_IMAGE:$CIRCLE_SHA1
+              # Create task for docker deploy
+              task_template='[
+                {
+                  "name": "%s",
+                  "image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
+                  "essential": true,
+                  "memory": "128",
+                  "cpu": "128",
+                  "networkMode": "bridge",
+                  "portMappings": [
+                    {
+                      "containerPort": 3000,
+                      "hostPort": 0,
+                      "protocol": "tcp",
+                    }
+                  ],
+                  "environment" : [
+                      { "name" : "NODE_ENV", "value" : "develop" }
+                  ]
+                }
+              ]'
+              echo "$task_template"
+              task_def=$(printf "$task_template" $TASK $AWS_ACCOUNT_ID $AWS_REGION $TASK $CIRCLE_SHA1)
+              # Register task definition
+              json=$(aws ecs register-task-definition --container-definitions "$task_def" --family "$FAMILY")
+              # Grab revision # using regular bash and grep
+              revision=$(echo "$json" | grep -o '"revision": [0-9]*' | grep -Eo '[0-9]+')
+              # Deploy revision
+              aws ecs update-service --cluster "$CLUSTER" --service "$SERVICE" --task-definition "$TASK":"$revision"
+              return 0
+            fi
