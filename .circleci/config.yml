@@ -37,8 +37,6 @@ jobs:
                   "name": "%s",
                   "image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
                   "essential": true,
-                  "memory": "128",
-                  "cpu": "128",
                   "networkMode": "bridge",
                   "portMappings": [
                     {
