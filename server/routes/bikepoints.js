@@ -7,6 +7,21 @@ const allBikePoints = require('../../mock-data/all-bike-points.json');
 const bikePointsByBounds = require('../../mock-data/bike-points-by-bounds.json');
 const bikePointsByRadius = require('../../mock-data/bike-points-by-radius.json');
 
+/**
+ * @swagger
+ * /bike/point:
+ *  get:
+ *     description: Retrieve all bike points
+ *     tags:
+ *       - bike
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: results
+ *         schema:
+ *           $ref: '#/definitions/results'
+ */
 router.get('/', function(req, res, next) {
   let mockData;
   let tflURI;

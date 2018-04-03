@@ -4,6 +4,21 @@ const Request = require('request');
 const transformer = require('./../utils/bikePointsTransformer');
 const config = require('../config');
 
+/**
+ * @swagger
+ * /bikepoint/search:
+ *   get:
+ *     description: Search for bike point
+ *     tags:
+ *       - bike
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: stocks
+ *         schema:
+ *           $ref: '#/definitions/Stocks'
+ */
 router.get('/', function(req, res, next) {
   let mockData;
   let tflURI = `${config.bike_search_api_url}?query=${req.query.query}&app_id=${
