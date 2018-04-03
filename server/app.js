@@ -36,7 +36,7 @@ app.use('/bike/point', allBikePoints);
 app.use('/bikepoint/search', bikePointsBySearch);
 app.use('/bikepoint/occupancy', bikeOccupancy);
 app.use('/place/autocomplete', googleAutoComplete);
-app.use('/api/docs', swagger.router);
+app.use('/bike/docs', swagger.router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
