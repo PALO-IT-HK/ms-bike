@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var healthcheck = require('./routes/healthcheck');
 var allBikePoints = require('./routes/bikepoints');
 var bikePointsBySearch = require('./routes/bikepoints-search');
 var bikeOccupancy = require('./routes/occupancy');
@@ -31,12 +31,12 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/', routes);
 app.use('/bike/point', allBikePoints);
 app.use('/bikepoint/search', bikePointsBySearch);
 app.use('/bikepoint/occupancy', bikeOccupancy);
 app.use('/place/autocomplete', googleAutoComplete);
 app.use('/bike/docs', swagger.router);
+app.use('/bike/healthcheck', healthcheck);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
