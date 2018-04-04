@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "test":
-      "./node_modules/mocha/bin/mocha test/ --colors --timeout 25000 --recursive test/",
-    "git-eslint": "sh update-version.sh"
+      "./node_modules/mocha/bin/mocha test/ --colors --timeout 25000 --recursive test/"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
