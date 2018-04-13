@@ -8,16 +8,21 @@ const config = require('../config');
  * @swagger
  * /bikepoint/search:
  *   get:
- *     description: Search for bike point
+ *     description: Search bike point
  *     tags:
  *       - bike
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: query
+ *         description: search query
+ *         default: 'BikePoints_148'
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
- *         description: stocks
- *         schema:
- *           $ref: '#/definitions/Stocks'
+ *         description: results
  */
 router.get('/', function(req, res, next) {
   let mockData;
