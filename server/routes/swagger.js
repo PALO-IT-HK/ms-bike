@@ -18,7 +18,7 @@ const options = {
         description: 'Bike Points API'
       }
     ],
-    schemes: ['http', 'https'],
+    schemes: ['https', 'http'],
     host: config.endpointBaseUrl,
     basePath: '/'
   },
